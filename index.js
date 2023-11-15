@@ -79,7 +79,7 @@ async function run() {
     };
 
     app.get("/services", async (req, res) => {
-      const result = await servicesCollection.find().toArray();
+      const result = servicesCollection.find().toArray();
       res.send(result);
     });
     app.post("/services", verifyJWT, verifyAdmin, async (req, res) => {
