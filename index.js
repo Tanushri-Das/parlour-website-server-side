@@ -7,7 +7,13 @@ const stripe = require("stripe")(process.env.PAYMENT_SECRET_KEY);
 const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
-app.use(cors());
+const corsConfig = {
+  origin: '',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}
+app.use(cors(corsConfig))
+app.options("", cors(corsConfig))
 app.use(express.json());
 
 const verifyJWT = (req, res, next) => {
@@ -79,7 +85,7 @@ async function run() {
     };
 
     app.get("/services", async (req, res) => {
-      const result = servicesCollection.find().toArray();
+      const result = await servicesCollection.find().toArray();
       res.send(result);
     });
     app.post("/services", verifyJWT, verifyAdmin, async (req, res) => {
